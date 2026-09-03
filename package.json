@@ -1,0 +1,26 @@
+{
+   "name": "wb-clone-team2-fe78",
+   "version": "1.0.0",
+   "description": "Учебный проект — клон интернет-магазина Wildberries.",
+   "source": "src/index.html",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "parcel",
+      "build": "parcel build"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/So1Bad/wb-clone-team2-fe78.git"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "type": "commonjs",
+   "bugs": {
+      "url": "https://github.com/So1Bad/wb-clone-team2-fe78/issues"
+   },
+   "homepage": "https://github.com/So1Bad/wb-clone-team2-fe78#readme",
+   "devDependencies": {
+      "parcel": "^2.16.4"
+   }
+}
