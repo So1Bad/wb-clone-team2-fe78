@@ -1,23 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-   <meta charset="utf-8" />
-   <title>WB Clone</title>
-   <link rel="stylesheet" href="styles.css" />
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet">
-   <script type="module" src="./app.js"></script>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Slider</title>
+   <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-   <div class="header"></div>
-   <div class="storage"></div>
-   <div class="slider"></div>
-   <div class="items"></div>
-   <div class="product"></div>
-</body>
+   <div class=" container slider-container">
 
+    <div class="slider-track-wrapper">
+        <div class="slider-track">
+         <div class="slide">
+            <img src="Slider/sliderImage/balck.jpg" alt="" class="slider-img">
+         </div>
+         <div class="slide">
+            <img src="Slider/sliderImage/blue.jpg" alt="" class="slider-img">
+         </div>
+         <div class="slide">
+            <img src="Slider/sliderImage/gold.png" alt="" class="slider-img">
+         </div>
+         <div class="slide">
+            <img src="Slider/sliderImage/green.jpg" alt="" class="slider-img">
+         </div>
+         <div class="slide">
+            <img src="Slider/sliderImage/pink.jpg" alt="" class="slider-img">
+         </div>
+         <div class="slide">
+            <img src="Slider/sliderImage/purple.jpg" alt="" class="slider-img">
+         </div>
+
+        </div>
+    </div>
+
+  
+    <button class="slider-btn prev-btn" aria-label="Назад"></button>
+    <button class="slider-btn next-btn" aria-label="Вперед"></button>
+
+    
+    <div class="slider-pagination"></div>
+
+    <script src="app.js"></script>
+</div>
+</body>
 </html>
