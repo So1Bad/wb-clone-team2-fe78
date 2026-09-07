@@ -1,0 +1,108 @@
+.items {
+  grid-template-columns: repeat(6, 1fr);
+  column-gap: 20px;
+  padding: 0 20px;
+  display: grid;
+}
+
+.card {
+  border-radius: 15px;
+  position: relative;
+}
+
+.card__img {
+  aspect-ratio: 279 / 372;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 15px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.card__inner-info {
+  justify-content: space-between;
+  align-items: end;
+  width: 100%;
+  padding: 0 10px;
+  display: flex;
+  position: absolute;
+  bottom: 20%;
+  left: 0;
+}
+
+.card__discount {
+  color: #fff;
+  background-color: #a73afd;
+  border-radius: 15px;
+  padding: 5px 15px;
+}
+
+.card__bin {
+  background-color: #8a2be2;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+
+.card__InCard {
+  background-color: #efedf7e6;
+}
+
+.card__bin:before {
+  content: "";
+  background-image: url("icon-shopping-cart.b568c1dc.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 70%;
+  height: 70%;
+  display: block;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+}
+
+.card__view {
+  opacity: 0;
+  background-color: #efedf7cc;
+  border: none;
+  border-radius: 15px;
+  width: 90%;
+  padding: 10px 20px;
+  font-size: 18px;
+  position: absolute;
+  bottom: 40%;
+  left: 5%;
+}
+
+.card__view:hover {
+  opacity: 1;
+}
+
+.info__price, .info__final-price {
+  display: inline-block;
+}
+
+.info__final-price {
+  color: #fa2691;
+  margin: 0 10px 10px 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.info__price {
+  color: #ababb7;
+  font-size: 14px;
+  line-height: 10px;
+  text-decoration: line-through;
+}
+
+.info__product-name {
+  color: #ababb7;
+  font-size: 16px;
+  line-height: 10px;
+}
+/*# sourceMappingURL=wb-clone-team2-fe78.426426f1.css.map */

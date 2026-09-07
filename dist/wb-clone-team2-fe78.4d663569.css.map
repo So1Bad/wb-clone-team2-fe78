@@ -1,0 +1,1 @@
+{"mappings":"AAAA;;;;;;AAMA;;;;AAIA","sources":["src/styles.css"],"sourcesContent":["* {\r\n   margin: 0;\r\n   padding: 0;\r\n   box-sizing: border-box;\r\n}\r\n\r\nbody {\r\n   font-family: \"Roboto\", sans-serif;\r\n}\r\n\r\n.container {\r\n   max-width: 1200px;\r\n}"],"names":[],"version":3,"file":"wb-clone-team2-fe78.4d663569.css.map","sourceRoot":"/__parcel_source_root/"}
