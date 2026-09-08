@@ -1,0 +1,127 @@
+.best-sellers__container {
+   margin: 0 auto;
+}
+
+.best-sellers__info {
+   font-weight: 500;
+   font-size: 25px;
+   line-height: 30px;
+   margin: 0 100px 20px;
+}
+
+.items {
+   padding: 0 20px;
+   display: grid;
+   column-gap: 20px;
+   grid-template-columns: repeat(6, 1fr);
+}
+
+.card {
+   border-radius: 15px;
+
+   position: relative;
+}
+
+.card__img {
+   width: 100%;
+   aspect-ratio: 279 / 372;
+   object-fit: cover;
+   object-position: center;
+   border-radius: 15px;
+   margin-bottom: 15px;
+}
+
+.card__inner-info {
+   width: 100%;
+   padding: 0 10px;
+   display: flex;
+   justify-content: space-between;
+   align-items: end;
+
+   position: absolute;
+   bottom: 20%;
+   left: 0;
+}
+
+.card__discount {
+   color: white;
+   background-color: rgb(167, 58, 253);
+   border-radius: 15px;
+   padding: 5px 15px;
+}
+
+.card__bin {
+   width: 50px;
+   height: 50px;
+   border-radius: 10px;
+   border: 1px solid white;
+   background-color: blueviolet;
+
+   position: relative;
+}
+
+.card__InCard {
+   background-color: rgba(239, 237, 247, 0.9);
+}
+
+.card__bin::before {
+   content: '';
+   display: block;
+
+   background-image: url(media/icon-shopping-cart.png);
+   background-repeat: no-repeat;
+   background-position: center;
+   background-size: cover;
+   width: 70%;
+   height: 70%;
+
+   position: absolute;
+   top: 10%;
+   left: 10%;
+
+}
+
+.card__view {
+   background-color: rgba(239, 237, 247, 0.8);
+   border-radius: 15px;
+   width: 90%;
+   padding: 10px 20px;
+   font-size: 18px;
+   border: none;
+
+   position: absolute;
+   bottom: 40%;
+   left: 5%;
+
+   opacity: 0;
+}
+
+.card__view:hover {
+   opacity: 1;
+}
+
+.info__price,
+.info__final-price {
+   display: inline-block;
+}
+
+.info__final-price {
+   margin: 0 10px 10px 0;
+   color: rgb(250, 38, 145);
+   font-weight: 600;
+   font-size: 20px;
+   line-height: 16px;
+}
+
+.info__price {
+   color: rgb(171, 171, 183);
+   text-decoration: line-through;
+   font-size: 14px;
+   line-height: 10px;
+}
+
+.info__product-name {
+   color: rgb(171, 171, 183);
+   font-size: 16px;
+   line-height: 10px;
+}
