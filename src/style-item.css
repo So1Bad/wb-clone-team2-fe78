@@ -1,3 +1,13 @@
+.best-sellers__container {
+   margin: 0 auto;
+}
+
+.best-sellers__info {
+   font-weight: 500;
+   font-size: 25px;
+   line-height: 30px;
+   margin: 0 100px 20px;
+}
 
 .items {
    padding: 0 20px;
@@ -57,7 +67,7 @@
 .card__bin::before {
    content: '';
    display: block;
-   
+
    background-image: url(media/icon-shopping-cart.png);
    background-repeat: no-repeat;
    background-position: center;
@@ -68,7 +78,7 @@
    position: absolute;
    top: 10%;
    left: 10%;
-   
+
 }
 
 .card__view {

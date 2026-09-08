@@ -1,43 +1,45 @@
-class productItem {
-  constructor(name, price, discount, inCart = false, finalPrice, path) {
-    this.id = crypto.randomUUID().substr(2, 5);
-    this.name = name;
-    this.price = price;
-    this.discount = +discount.substr(0,2);
-    this.finalPrice = finalPrice;
-    this.path = path;
+import { createProductCard, productItem } from './dom.js';
 
 
-    this.inCart = inCart;
-  }
+const item1 = new productItem('Шины', '5000', '20%', 'media/product1.webp')
+const item2 = new productItem('Набор для шашлыка', '500', '5%', 'media/product2.webp');
+const item3 = new productItem('Кросовки', '300', '50%', 'media/product3.webp');
+const item4 = new productItem('Набор нижнего белья', '50', '30%', 'media/product4.webp');
+const item5 = new productItem('Зимние шины', '3000', '25%', 'media/product5.webp');
+const item6 = new productItem('Тетради', '30', '10%', 'media/product6.webp');
 
-  finalPrice() {
-    return this.finalPrice = this.price - this.price * this.discount;
-  }
+const productsArray = [];
+productsArray.push(item1, item2, item3, item4, item5, item6);
+const itemsContainer = document.querySelector('.items');
+if (itemsContainer) {
+   const fragment = document.createDocumentFragment();
+   productsArray.forEach(product => {
+      const cardElement = createProductCard(product);
+      fragment.append(cardElement); 
+   });
+   itemsContainer.append(fragment);
 
-  inCart() {
-    const items = document.querySelector('.items');
+   itemsContainer.addEventListener('click', (event) => {
+      const binBtn = event.target.closest('.card__bin');
+      if (!binBtn) return;
 
-    items.addEventListener('click', (event) => {
-        const quickVuiwBtn = event.target.closest('.card__bin');
+      const cardElement = binBtn.closest('.items__card');
+      if (!cardElement) return;
 
-        if(!quickVuiwBtn) {
-            return;
-        }
+      // Находим ID карточки, по которой кликнули
+      const productId = cardElement.dataset.id;
+      // Ищем соответствующий объект товара в нашем массиве
+      const productObj = productsArray.find(p => p.id === productId);
 
-        const item = quickVuiwBtn.closest('.items__card');
-            if (!item) {
-                return;
-            }
+      // Переключаем класс визуально
+      binBtn.classList.toggle('card__InCard');
 
-        quickVuiwBtn.classList.toggle('card__InCard');
-
-        if (quickVuiwBtn.classList.contains('.card__InCard')) {
-            this.inCart = true; 
-        }
-    })
-
-    return this.inCart;
-  }
+      // Обновляем статус inCart внутри объекта
+      if (productObj) {
+         productObj.inCart = binBtn.classList.contains('card__InCard');
+         console.log(`Товар "${productObj.name}" в корзине: ${productObj.inCart}`);
+      }
+   });
+} else {
+   console.error('Контейнер с классом .items не найден на странице!');
 }
-
