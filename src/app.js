@@ -1,38 +1,60 @@
-import { createProductCard, productItem } from './dom.js';
+import { createProductCard, renderProductCards } from './dom.js';
 
 // Переменная состояния для хранения количества товаров
 let cartCount = 0;
+let cardArr = [];
+
+const cartBadge = document.getElementById("cart-badge");
+const itemsContainer = document.querySelector('.items');
+
+// Функция для обновления счетчика на странице
+function updateCartBadge() {
+   if (!cartBadge) return;
+
+   cartBadge.textContent = cartCount;
+
+   // Если товаров > 0, показываем бейдж, иначе скрываем
+   if (cartCount > 0) {
+      cartBadge.classList.add("nav__badge--visible");
+   } else {
+      cartBadge.classList.remove("nav__badge--visible");
+   }
+}
 
 //Функция инициализации функционала шапки
-
 function initHeaderLogic() {
    const cartBtn = document.getElementById("cart-btn");
-   const cartBadge = document.getElementById("cart-badge");
    const searchInput = document.querySelector(".search__input");
 
-   if (!cartBtn || !cartBadge || !searchInput) return;
+   if (!cartBtn || !searchInput) return;
 
    // Функционал корзины: клик увеличивает число и включает модификатор видимости
    cartBtn.addEventListener("click", () => {
       cartCount++;
-      cartBadge.textContent = cartCount;
-
-      cartBadge.classList.add("nav__badge--visible");
+      updateCartBadge();
    });
 
-   // Функционал поиска: реагирует на нажатие клавиши Enter
-   searchInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-         const query = searchInput.value.trim();
-         if (query !== "") {
-            alert(`Запрос отправлен в обработку: "${query}"`);
-            searchInput.value = "";
-         }
+
+   searchInput.addEventListener("input", () => {
+      const search = searchInput.value.trim().toLowerCase();
+
+      // Фильтруем оригинальный массив товаров по имени
+      const filteredProducts = cardArr.filter(product => {
+         return product.name.toLowerCase().includes(search);
+      });
+
+      // Перерисовываем карточки. Если ничего не найдено, контейнер просто очистится
+      renderProductCards(filteredProducts, itemsContainer);
+
+      // Выводим сообщение , если поиск не дал результатов
+      if (filteredProducts.length === 0 && search !== "") {
+         itemsContainer.innerHTML = `<p class="search-empty">По запросу "${searchInput.value}" ничего не найдено</p>`;
       }
    });
 }
 
 initHeaderLogic();
+
 document.addEventListener('DOMContentLoaded', () => {
    const track = document.querySelector('.slider-track');
    const slides = document.querySelectorAll('.slide');
@@ -80,45 +102,64 @@ document.addEventListener('DOMContentLoaded', () => {
    });
 });
 
-const item1 = new productItem('Шины', '5000', '20%', new URL('./media/product1.webp', import.meta.url).href)
-const item2 = new productItem('Набор для шашлыка', '500', '5%', new URL('./media/product2.webp', import.meta.url).href);
-const item3 = new productItem('Кросовки', '300', '50%', new URL('./media/product3.webp', import.meta.url).href);
-const item4 = new productItem('Набор нижнего белья', '50', '30%', new URL('./media/product4.webp', import.meta.url).href);
-const item5 = new productItem('Зимние шины', '3000', '25%', new URL('./media/product5.webp', import.meta.url).href);
-const item6 = new productItem('Тетради', '30', '10%', new URL('./media/product6.webp', import.meta.url).href);
 
-const productsArray = [];
-productsArray.push(item1, item2, item3, item4, item5, item6);
-const itemsContainer = document.querySelector('.items');
-if (itemsContainer) {
-   const fragment = document.createDocumentFragment();
-   productsArray.forEach(product => {
-      const cardElement = createProductCard(product);
-      fragment.append(cardElement);
-   });
-   itemsContainer.append(fragment);
-
-   itemsContainer.addEventListener('click', (event) => {
-      const binBtn = event.target.closest('.card__bin');
-      if (!binBtn) return;
-
-      const cardElement = binBtn.closest('.items__card');
-      if (!cardElement) return;
-
-      // Находим ID карточки, по которой кликнули
-      const productId = cardElement.dataset.id;
-      // Ищем соответствующий объект товара в нашем массиве
-      const productObj = productsArray.find(p => p.id === productId);
-
-      // Переключаем класс визуально
-      binBtn.classList.toggle('card__InCard');
-
-      // Обновляем статус inCart внутри объекта
-      if (productObj) {
-         productObj.inCart = binBtn.classList.contains('card__InCard');
-         console.log(`Товар "${productObj.name}" в корзине: ${productObj.inCart}`);
+const url = 'https://6aa285e0ccb3db9689a69463.mockapi.io/wbclone/Cards';
+fetch(url)
+   .then((res) => {
+      if (!res.ok) {
+         throw new Error(res.status)
       }
-   });
-} else {
-   console.error('Контейнер с классом .items не найден на странице!');
-}
+      return res.json();
+   }
+   ).then((res) => {
+      cardArr = res;
+
+      cardArr.forEach((product) => {
+         product.finalPrice = (product.price - (product.price * (product.discount / 100))).toFixed(2)
+         if (product.inCart) {
+            cartCount++;
+         }
+      })
+
+      updateCartBadge();
+
+      console.log(cardArr);
+      renderProductCards(cardArr, itemsContainer);
+
+      if (itemsContainer) {
+         itemsContainer.addEventListener('click', (event) => {
+            const binBtn = event.target.closest('.card__bin');
+            if (!binBtn) return;
+
+            const cardElement = binBtn.closest('.items__card');
+            if (!cardElement) return;
+
+            // Находим ID карточки, по которой кликнули
+            const productId = cardElement.dataset.id;
+            // Ищем соответствующий объект товара в нашем массиве
+            const productObj = cardArr.find(p => p.id === productId);
+
+            if (!productObj) return;
+
+            // Переключаем класс
+            binBtn.classList.toggle('card__InCard');
+            productObj.inCart = binBtn.classList.contains('card__InCard');
+
+            if (productObj.inCart) {
+               cartCount++;
+            } else {
+               cartCount--;
+            }
+
+            // Обновляем отображение в шапке
+            updateCartBadge();
+
+            console.log(`Товар "${productObj.name}" в корзине: ${productObj.inCart}. Всего в корзине: ${cartCount}`);
+         });
+      } else {
+         console.error('Контейнер с классом .items не найден на странице!');
+      }
+   })
+   .catch((e) => {
+      console.log(e)
+   })

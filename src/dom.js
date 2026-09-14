@@ -19,7 +19,6 @@ export const createProductCard = (productItem) => {
       className: 'items__card card'
    });
    card.dataset.id = productItem.id;
-   console.log(productItem.path)
    // Изображение товара
    const img = createDomElement('img', {
       className: 'card__img',
@@ -75,42 +74,20 @@ export const createProductCard = (productItem) => {
 
    return card;
 };
-export class productItem {
-   constructor(name, price, discount, path, inCart = false) {
-      this.id = crypto.randomUUID().slice(0, 5);
-      this.name = name;
-      this.price = +price;
-      this.discount = +discount.replace('%', '');
-      this.finalPrice = this.price - (this.price * (this.discount / 100));
-      this.path = path;
 
-
-      this.inCart = inCart;
+export const renderProductCards = (products, container) => {
+   if (!container) {
+      console.error('Контейнер для рендера не найден!');
+      return;
    }
+   container.innerHTML = '';
 
-   inCart() {
-      const items = document.querySelector('.items');
+   const fragment = document.createDocumentFragment();
 
-      items.addEventListener('click', (event) => {
-         const quickVuiwBtn = event.target.closest('.card__bin');
+   products.forEach(product => {
+      const cardElement = createProductCard(product);
+      fragment.append(cardElement);
+   });
 
-         if (!quickVuiwBtn) {
-            return;
-         }
-
-         const item = quickVuiwBtn.closest('.items__card');
-         if (!item) {
-            return;
-         }
-
-         quickVuiwBtn.classList.toggle('card__InCard');
-
-         if (quickVuiwBtn.classList.contains('.card__InCard')) {
-            this.inCart = true;
-            console.log(quickVuiwBtn)
-         }
-      })
-
-      return this.inCart;
-   }
-}
+   container.append(fragment);
+};
