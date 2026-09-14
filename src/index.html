@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина покупок</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button id="openCartBtn">🛒 Корзина (<span id="cartCount">0</span>)</button>
+    <div class="products">
+        <div class="product">
+            <h3>Футболка</h3>
+            <p>Цена: 1000 руб.</p>
+            <button class="addBtn" data-name="Футболка" data-price="1000">Добавить</button>
+        </div>
+
+        <div class="product">
+            <h3>Джинсы</h3>
+            <p>Цена: 2500 руб.</p>
+            <button class="addBtn" data-name="Джинсы" data-price="2500">Добавить</button>
+        </div>
+
+        <div class="product">
+            <h3>Кроссовки</h3>
+            <p>Цена: 3000 руб.</p>
+            <button class="addBtn" data-name="Кроссовки" data-price="3000">Добавить</button>
+        </div>
+    </div>
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span id="closeBtn" class="close">&times;</span>
+            <h2>Ваша корзина</h2>
+            <ul id="cartItems"></ul>
+            <p class="total">Итого: <span id="totalPrice">0</span> руб.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
