@@ -34,13 +34,13 @@
 
 .card__inner-info {
    width: 100%;
-   padding: 0 10px;
+   padding: 0 15px;
    display: flex;
    justify-content: space-between;
    align-items: end;
 
    position: absolute;
-   bottom: 20%;
+   bottom: 80px;
    left: 0;
 }
 
@@ -48,7 +48,9 @@
    color: white;
    background-color: rgb(167, 58, 253);
    border-radius: 15px;
-   padding: 5px 15px;
+   padding: 5px 10px;
+   font-size: 18px;
+   line-height: 14px;
 }
 
 .card__bin {
@@ -87,11 +89,12 @@
    border-radius: 15px;
    width: 90%;
    padding: 10px 20px;
-   font-size: 18px;
+   font-size: 16px;
+   line-height: 12px;
    border: none;
 
    position: absolute;
-   bottom: 40%;
+   bottom: 50%;
    left: 5%;
 
    opacity: 0;
@@ -123,6 +126,61 @@
 
 .info__product-name {
    color: rgb(171, 171, 183);
-   font-size: 16px;
-   line-height: 10px;
+   font-size: 18px;
+   line-height: 14px;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+   .container {
+      max-width: 100%;
+   }
+   .items {
+      row-gap: 20px;
+      grid-template-columns: repeat(4, 1fr);
+   }
+   .card__inner-info {
+      bottom: 85px;
+   }
+   .info__product-name {
+      font-size: 20px;
+      line-height: 16px;
+   }
+}
+
+@media (max-width: 768px) {
+   .items {
+      grid-template-columns: repeat(2, 1fr);
+      row-gap: 20px;
+   }
+   .card__inner-info {
+      padding: 0 30px;
+      bottom: 15%;
+   }
+   .card__discount {
+      font-size: 24px;
+      line-height: 20px;
+      border-radius: 20px;
+      padding: 10px 15px;
+   }
+   .card__bin {
+      width: 70px;
+      height: 70px;
+   }
+   .info__final-price {
+      font-size: 26px;
+      line-height: 22px;
+   }
+   .info__price {
+      font-size: 26px;
+      line-height: 22px;
+   }
+   .info__product-name {
+      font-size: 24px;
+      line-height: 20px;
+   }
+   .card__view {
+      padding: 15px 20px;
+      font-size: 22px;
+      line-height: 18px;
+   }
 }
