@@ -168,3 +168,69 @@ export const openQuickViewModal = (product, onCartToggle) => {
    });
 }
 
+export const openCartModal = (cartItems, onClearCart) => {
+   const storageContainer = document.querySelector('.storage');
+   if (!storageContainer) {
+      console.error('Контейнер .storage не найден в HTML!');
+      return;
+   }
+
+   storageContainer.innerHTML = '';
+
+   const fragment = document.createDocumentFragment();
+
+   const cartModal = createDomElement('div', { className: 'cart-modal' });
+
+   const header = createDomElement('div', { className: 'cart-modal__header' });
+   const title = createDomElement('h3', { className: 'cart-modal__title', textContent: 'Корзина' });
+   const clearBtn = createDomElement('button', { className: 'cart-modal__clear-btn', textContent: 'Очистить корзину' });
+   header.append(title, clearBtn);
+
+   const list = createDomElement('div', { className: 'cart-modal__list' });
+   let totalSum = 0;
+
+   if (cartItems.length === 0) {
+      const emptyMsg = createDomElement('p', { className: 'cart-modal__empty', textContent: 'Корзина пуста' });
+      list.append(emptyMsg);
+   } else {
+      cartItems.forEach(item => {
+         const itemRow = createDomElement('div', { className: 'cart-item' });
+         const itemName = createDomElement('span', { className: 'cart-item__name', textContent: item.name });
+         const itemPrice = createDomElement('span', { className: 'cart-item__price', textContent: `${item.finalPrice} p` });
+
+         itemRow.append(itemName, itemPrice);
+         list.append(itemRow);
+
+         // Плюсуем к итоговой стоимости
+         totalSum += Number(item.finalPrice);
+      });
+   }
+
+   const footer = createDomElement('div', { className: 'cart-modal__footer' });
+   const totalText = createDomElement('div', {
+      className: 'cart-modal__total',
+      textContent: `Итого ${totalSum.toFixed(2)} p`
+   });
+   footer.append(totalText);
+
+   cartModal.append(header, list, footer);
+   fragment.append(cartModal);
+   storageContainer.append(fragment);
+
+   storageContainer.style.display = 'flex';
+
+   // Слушатель закрытия при клике на темную область вокруг модалки
+   storageContainer.onclick = (e) => {
+      if (e.target === storageContainer) {
+         storageContainer.style.display = 'none';
+         storageContainer.innerHTML = '';
+      }
+   };
+
+   // Слушатель для кнопки очистки корзины
+   clearBtn.onclick = () => {
+      onClearCart();
+      storageContainer.style.display = 'none';
+      storageContainer.innerHTML = '';
+   };
+};

@@ -1,4 +1,4 @@
-import { renderProductCards, openQuickViewModal } from './dom.js';
+import { renderProductCards, openQuickViewModal, openCartModal } from './dom.js';
 
 // Переменная состояния для хранения количества товаров
 let cartCount = 0;
@@ -7,10 +7,21 @@ let cardArr = [];
 const cartBadge = document.getElementById("cart-badge");
 const itemsContainer = document.querySelector('.items');
 
+function saveCartToLocalStorage() {
+   const savedIds = cardArr
+      .filter(product => product.inCart)
+      .map(product => product.id);
+
+   localStorage.setItem('wbCart', JSON.stringify(savedIds));
+}
+
+function getCartFromLocalStorage() {
+   const data = localStorage.getItem('wbCart');
+   return data ? JSON.parse(data) : [];
+}
 // Функция для обновления счетчика на странице
 function updateCartBadge() {
    if (!cartBadge) return;
-
    cartBadge.textContent = cartCount;
 
    // Если товаров > 0, показываем бейдж, иначе скрываем
@@ -28,10 +39,12 @@ function initHeaderLogic() {
 
    if (!cartBtn || !searchInput) return;
 
-   // Функционал корзины: клик увеличивает число и включает модификатор видимости
    cartBtn.addEventListener("click", () => {
-      cartCount++;
-      updateCartBadge();
+      // Фильтруем массив, берем только добавленные товары
+      const addedProducts = cardArr.filter(product => product.inCart === true);
+
+      // Открываем модалку и передаем туда товары + функцию очистки
+      openCartModal(addedProducts, clearAllCart);
    });
 
 
@@ -51,6 +64,21 @@ function initHeaderLogic() {
          itemsContainer.innerHTML = `<p class="search-empty">По запросу "${searchInput.value}" ничего не найдено</p>`;
       }
    });
+}
+
+function clearAllCart() {
+   cardArr.forEach(product => {
+      product.inCart = false;
+   });
+
+   cartCount = 0;
+   updateCartBadge();
+   saveCartToLocalStorage();
+
+   const allActiveButtons = itemsContainer.querySelectorAll('.card__bin.card__InCard');
+   allActiveButtons.forEach(btn => btn.classList.remove('card__InCard'));
+
+   console.log('Корзина полностью очищена');
 }
 
 initHeaderLogic();
@@ -113,17 +141,19 @@ fetch(url)
    }
    ).then((res) => {
       cardArr = res;
+      const savedCartIds = getCartFromLocalStorage();
 
       cardArr.forEach((product) => {
          product.finalPrice = (product.price - (product.price * (product.discount / 100))).toFixed(2)
-         if (product.inCart) {
+         if (savedCartIds.includes(product.id)) {
+            product.inCart = true;
             cartCount++;
+         } else {
+            product.inCart = false;
          }
       })
 
       updateCartBadge();
-
-      console.log(cardArr);
       renderProductCards(cardArr, itemsContainer);
 
       function toggleProductCartStatus(productId) {
@@ -141,6 +171,7 @@ fetch(url)
             cartCount--;
          }
          updateCartBadge();
+         saveCartToLocalStorage();
 
          // Синхронизируем карточку на главной странице, если она отрисована
          const cardElement = itemsContainer.querySelector(`.items__card[data-id="${productId}"]`);
