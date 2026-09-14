@@ -1,4 +1,4 @@
-import { createProductCard, renderProductCards } from './dom.js';
+import { renderProductCards, openQuickViewModal } from './dom.js';
 
 // Переменная состояния для хранения количества товаров
 let cartCount = 0;
@@ -126,35 +126,58 @@ fetch(url)
       console.log(cardArr);
       renderProductCards(cardArr, itemsContainer);
 
+      function toggleProductCartStatus(productId) {
+         // Ищем соответствующий объект товара в нашем массиве
+         const productObj = cardArr.find(p => p.id === productId);
+         if (!productObj) return false;
+
+         // Инвертируем статус
+         productObj.inCart = !productObj.inCart;
+
+         // Меняем счетчик
+         if (productObj.inCart) {
+            cartCount++;
+         } else {
+            cartCount--;
+         }
+         updateCartBadge();
+
+         // Синхронизируем карточку на главной странице, если она отрисована
+         const cardElement = itemsContainer.querySelector(`.items__card[data-id="${productId}"]`);
+         if (cardElement) {
+            const binBtn = cardElement.querySelector('.card__bin');
+            if (binBtn) {
+               binBtn.classList.toggle('card__InCard', productObj.inCart);
+            }
+         }
+
+         console.log(`Товар "${productObj.name}" изменен. В корзине: ${productObj.inCart}. Всего: ${cartCount}`);
+         return productObj.inCart;
+      }
+
+
       if (itemsContainer) {
          itemsContainer.addEventListener('click', (event) => {
-            const binBtn = event.target.closest('.card__bin');
-            if (!binBtn) return;
-
-            const cardElement = binBtn.closest('.items__card');
+            const cardElement = event.target.closest('.items__card');
             if (!cardElement) return;
 
             // Находим ID карточки, по которой кликнули
             const productId = cardElement.dataset.id;
-            // Ищем соответствующий объект товара в нашем массиве
-            const productObj = cardArr.find(p => p.id === productId);
 
-            if (!productObj) return;
-
-            // Переключаем класс
-            binBtn.classList.toggle('card__InCard');
-            productObj.inCart = binBtn.classList.contains('card__InCard');
-
-            if (productObj.inCart) {
-               cartCount++;
-            } else {
-               cartCount--;
+            const binBtn = event.target.closest('.card__bin');
+            if (binBtn) {
+               toggleProductCartStatus(productId);
+               return;
             }
-
-            // Обновляем отображение в шапке
-            updateCartBadge();
-
-            console.log(`Товар "${productObj.name}" в корзине: ${productObj.inCart}. Всего в корзине: ${cartCount}`);
+            // 2. Клик по кнопке быстрого просмотра
+            const viewBtn = event.target.closest('.card__view');
+            if (viewBtn) {
+               const productObj = cardArr.find(p => p.id === productId);
+               if (productObj) {
+                  // Передаем объект товара и наш колбэк для синхронизации
+                  openQuickViewModal(productObj, toggleProductCartStatus);
+               }
+            }
          });
       } else {
          console.error('Контейнер с классом .items не найден на странице!');

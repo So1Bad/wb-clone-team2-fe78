@@ -22,7 +22,7 @@ export const createProductCard = (productItem) => {
    // Изображение товара
    const img = createDomElement('img', {
       className: 'card__img',
-      src: productItem.path // Путь к картинке (например, 'media/product1.webp')
+      src: productItem.path // Путь к картинке
    });
 
    // Внутренний блок с акцией и корзиной
@@ -91,3 +91,80 @@ export const renderProductCards = (products, container) => {
 
    container.append(fragment);
 };
+
+export const openQuickViewModal = (product, onCartToggle) => {
+   let productContainer = document.querySelector('.product');
+   if (!productContainer) {
+      productContainer = createDomElement('div', { className: 'product' });
+      productContainer.style.display = 'none';
+      document.body.append(productContainer);
+   }
+
+   productContainer.innerHTML = '';
+
+   const fragment = document.createDocumentFragment();
+
+   const modalOverlay = createDomElement('div', { className: 'modal-overlay' });
+   const modalContent = createDomElement('div', { className: 'modal-content' });
+   const closeBtn = createDomElement('button', { className: 'modal-close', textContent: '×' });
+
+   const modalLeft = createDomElement('div', { className: 'modal-left' });
+   const modalImg = createDomElement('img', { className: 'modal-img', src: product.path });
+   modalLeft.append(modalImg);
+
+   const modalRight = createDomElement('div', { className: 'modal-right' });
+
+   const textWrapper = createDomElement('div', {});
+   const title = createDomElement('h2', { className: 'modal-title', textContent: product.name });
+   const pricesBlock = createDomElement('div', { className: 'modal-prices' });
+   const finalPrice = createDomElement('span', { className: 'modal-final-price', textContent: `${product.finalPrice} p` });
+   const oldPrice = createDomElement('span', { className: 'modal-old-price', textContent: `${product.price} p` });
+   pricesBlock.append(finalPrice, oldPrice);
+   const description = createDomElement('p', {
+      className: 'modal-description',
+      textContent: product.description || 'Описание товара временно отсутствует.',
+   });
+   textWrapper.append(title, pricesBlock, description);
+
+   const actionBtn = createDomElement('button', {
+      className: 'modal-action-btn',
+      textContent: product.inCart ? 'Удалить из корзины' : 'Добавить в корзину'
+   });
+   if (product.inCart) {
+      actionBtn.classList.add('modal-action-btn-delete');
+   }
+
+   modalRight.append(textWrapper, actionBtn);
+   modalContent.append(closeBtn, modalLeft, modalRight);
+   modalOverlay.append(modalContent);
+   fragment.append(modalOverlay);
+   productContainer.append(fragment);
+   productContainer.style.display = 'block';
+
+   modalOverlay.classList.add('modal--open')
+
+   const closeModal = () => {
+      modalOverlay.classList.remove('modal--open');
+      productContainer.innerHTML = '';
+      productContainer.style.display = 'none';
+   };
+
+   closeBtn.addEventListener('click', closeModal);
+   modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeModal();
+   });
+
+   actionBtn.addEventListener('click', () => {
+      const isNowInCart = onCartToggle(product.id);
+
+      // Обновляем внешний вид кнопки в модальном окне
+      if (isNowInCart) {
+         actionBtn.textContent = 'Удалить из корзины';
+         actionBtn.classList.add('modal-action-btn-delete');
+      } else {
+         actionBtn.textContent = 'Добавить в корзину';
+         actionBtn.classList.remove('modal-action-btn-delete');
+      }
+   });
+}
+
