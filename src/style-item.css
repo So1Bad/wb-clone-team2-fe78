@@ -153,8 +153,8 @@
       row-gap: 20px;
    }
    .card__inner-info {
-      padding: 0 30px;
-      bottom: 15%;
+      padding: 0 25px;
+      bottom: 20%;
    }
    .card__discount {
       font-size: 24px;
@@ -182,5 +182,96 @@
       padding: 15px 20px;
       font-size: 22px;
       line-height: 18px;
+   }
+}
+
+@media (max-width: 660px) {
+   .card__inner-info {
+      padding: 0 20px;
+      bottom: 23%;
+   }
+   .card__discount {
+      font-size: 18px;
+      line-height: 14px;
+   }
+   .card__bin {
+      width: 60px;
+      height: 60px;
+   }
+   .info__final-price {
+      font-size: 20px;
+      line-height: 16px;
+   }
+   .info__price {
+      font-size: 20px;
+      line-height: 16px;
+   }
+   .info__product-name {
+      font-size: 18px;
+      line-height: 14px;
+   }
+   .card__view {
+      padding: 10px 10px;
+      font-size: 16px;
+      line-height: 12px;
+   }
+}
+
+@media (max-width: 500px) {
+   .card__inner-info {
+      padding: 0 10px;
+      bottom: 27%;
+   }
+   .card__discount {
+      font-size: 16px;
+      line-height: 12px;
+      padding: 5px 10px;
+   }
+   .card__bin {
+      width: 50px;
+      height: 50px;
+   }
+   .info__price {
+      font-size: 18px;
+      line-height: 14px;
+   }
+}
+
+@media (max-width: 378px) {
+   .card__inner-info {
+      padding: 0 5px;
+      bottom: 85px;
+   }
+   .card__discount {
+      font-size: 14px;
+      line-height: 10px;
+   }
+   .card__bin {
+      width: 40px;
+      height: 40px;
+   }
+   .info__final-price {
+      font-size: 16px;
+      line-height: 12px;
+   }
+   .info__price {
+      font-size: 16px;
+      line-height: 12px;
+   }
+   .info__product-name {
+      font-size: 16px;
+      line-height: 12px;
+   }
+   .card__view {
+      padding: 5px 10px;
+      font-size: 16px;
+      line-height: 12px;
+   }
+}
+
+@media (max-width: 347px) {
+   .card__inner-info {
+      padding: 0 10px;
+      bottom: 95px;
    }
 }
